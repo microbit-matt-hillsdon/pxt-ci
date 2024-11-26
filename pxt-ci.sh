@@ -7,7 +7,7 @@
 #
 # Intended to be run via
 # 
-# curl -sL https://... | bash -s - master 
+# curl -sL https://github.com/microbit-matt-hillsdon/pxt-ci/raw/refs/heads/main/pxt-ci.sh | bash -s - master 
 #
 # ... where main is the ref of pxt-microbit to checkout (if omitted it defaults
 # to master)
@@ -35,10 +35,7 @@ npm link
   # This will install all deps too
   npm link ../pxt
   pxt staticpkg
-)
-
-
-cat << EOF > built/packaged/404.html
+  cat << EOF > built/packaged/404.html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -50,3 +47,6 @@ cat << EOF > built/packaged/404.html
   </body>
 </html>
 EOF
+)
+
+
