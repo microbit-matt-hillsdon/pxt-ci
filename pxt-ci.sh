@@ -25,6 +25,8 @@ npm install
 npm run build
 npm link
 
+PXT_DIR="$PWD"
+
 # Sibling pxt-microbit project setup
 (
   cd ../
@@ -33,7 +35,7 @@ npm link
   git checkout "${1:-master}"
   npm install
   # This will install all deps too
-  npm link ../pxt
+  npm link "$PXT_DIR"
   pxt staticpkg
   cat << EOF > built/packaged/404.html
 <!DOCTYPE html>
