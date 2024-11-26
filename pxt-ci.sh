@@ -12,7 +12,7 @@
 # ... where main is the ref of pxt-microbit to checkout (if omitted it defaults
 # to master)
 # 
-# Build output will be in ../pxt-microbit/built/packaged
+# Build output will be in public inside the pxt checkout.
 # 
 
 set -euxo pipefail
@@ -49,4 +49,5 @@ npm link
 EOF
 )
 
-
+# Use a build path that's the default for CloudFlare 
+mv ../pxt-microbit/built/packaged public
