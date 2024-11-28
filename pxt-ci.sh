@@ -16,6 +16,7 @@
 # 
 
 set -euxo pipefail
+export CI=true
 
 # This is a thin CLI intended to be installed globally
 npm install -g pxt
