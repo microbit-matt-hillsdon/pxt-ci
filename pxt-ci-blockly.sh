@@ -17,7 +17,6 @@
 
 set -euxo pipefail
 export CI=true
-export NODE_ENV=production
 
 # This is a thin CLI intended to be installed globally
 npm install -g pxt
@@ -41,7 +40,7 @@ if grep @blockly/keyboard-experiment package.json &>/dev/null; then
   npm i ./blockly-keyboard-experiment*.tgz
 fi
 
-npm run build
+PXT_ENV=production npm run build
 npm link
 
 PXT_DIR="$PWD"
@@ -55,7 +54,7 @@ PXT_DIR="$PWD"
   npm install
   # This will install all deps too
   npm link "$PXT_DIR"
-  pxt staticpkg --minify
+  PXT_ENV=production pxt staticpkg --minify
   cat << EOF > built/packaged/404.html
 <!DOCTYPE html>
 <html lang="en">
