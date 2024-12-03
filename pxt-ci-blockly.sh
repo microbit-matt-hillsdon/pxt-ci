@@ -17,6 +17,7 @@
 
 set -euxo pipefail
 export CI=true
+export NODE_ENV=production
 
 # This is a thin CLI intended to be installed globally
 npm install -g pxt
