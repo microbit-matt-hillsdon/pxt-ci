@@ -29,6 +29,7 @@ if grep @blockly/keyboard-experiment package.json &>/dev/null; then
   (
     cd ../
     git clone git@github.com:google/blockly-keyboard-experimentation.git
+    git checkout makecode-tweaks
     # Building main for the moment until they have regular versioned releases, then we'll drop this.
     cd blockly-keyboard-experimentation
     npm install
