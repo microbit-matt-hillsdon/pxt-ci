@@ -29,9 +29,9 @@ if grep @blockly/keyboard-experiment package.json &>/dev/null; then
   (
     cd ../
     git clone git@github.com:google/blockly-keyboard-experimentation.git
-    git checkout makecode-tweaks
-    # Building main for the moment until they have regular versioned releases, then we'll drop this.
     cd blockly-keyboard-experimentation
+    # Building our branch for the moment
+    git checkout makecode-tweaks
     npm install
     npm run build
     # Doesn't work with npm link (dupe'd blockly deps?) so using tgz package for now
