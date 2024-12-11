@@ -28,7 +28,7 @@ npm install
 if grep @blockly/keyboard-experiment package.json &>/dev/null; then
   (
     cd ../
-    git clone git@github.com:google/blockly-keyboard-experimentation.git
+    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
     cd blockly-keyboard-experimentation
     # Building our branch for the moment
     git checkout makecode-tweaks
