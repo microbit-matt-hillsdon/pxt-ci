@@ -25,7 +25,8 @@ npm install -g pxt
 npm install
 
 # Blockly keyboard experiment plugin setup
-if grep @blockly/keyboard-experiment package.json &>/dev/null; then
+# Skip if not present or installed from tgz
+if grep -q "@blockly/keyboard-experiment" package.json && ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
   (
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
