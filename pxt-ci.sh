@@ -37,7 +37,7 @@ PXT_DIR="$PWD"
   npm install
   # This will install all deps too
   npm link "$PXT_DIR"
-  pxt staticpkg --minify
+  PXT_ENV=production pxt staticpkg --minify
   cat << EOF > built/packaged/404.html
 <!DOCTYPE html>
 <html lang="en">

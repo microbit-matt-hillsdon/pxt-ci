@@ -17,7 +17,7 @@ export CI=true
 npm install -g pxt
 
 npm install
-pxt staticpkg --minify
+PXT_ENV=production pxt staticpkg --minify
 cat << EOF > built/packaged/404.html
 <!DOCTYPE html>
 <html lang="en">
