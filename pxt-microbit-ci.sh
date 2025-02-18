@@ -15,6 +15,8 @@ export CI=true
 
 # This is a thin CLI intended to be installed globally
 npm install -g pxt
+# pxt appears to have a hidden dep on uglify-js
+npm i -g uglify-js@3
 
 npm install
 PXT_ENV=production pxt staticpkg --minify
