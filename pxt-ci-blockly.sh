@@ -7,7 +7,7 @@
 #
 # Intended to be run via
 # 
-# curl -sL https://github.com/microbit-matt-hillsdon/pxt-ci/raw/refs/heads/main/pxt-ci.sh | bash -s - master 
+# curl -sL https://github.com/microbit-matt-hillsdon/pxt-ci/raw/refs/heads/main/pxt-ci.sh | bash -s
 #
 # ... where main is the ref of pxt-microbit to checkout (if omitted it defaults
 # to master)
@@ -45,14 +45,15 @@ fi
 PXT_ENV=production npm run build
 npm link
 
+PXT_BRANCH=$(git symbolic-ref --quiet --short HEAD)
 PXT_DIR="$PWD"
 
 # Sibling pxt-microbit project setup
 (
   cd ../
-  git clone git@github.com:microsoft/pxt-microbit.git
+  git clone git@github.com:microbit-matt-hillsdon/pxt-microbit.git
   cd pxt-microbit
-  git checkout "${1:-master}"
+  git checkout "$PXT_BRANCH" || echo "No matching branch; falling back to master"
   npm install
   # This will install all deps too
   npm link "$PXT_DIR"
