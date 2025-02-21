@@ -45,7 +45,7 @@ fi
 PXT_ENV=production npm run build
 npm link
 
-PXT_BRANCH=$(git symbolic-ref --quiet --short HEAD)
+PXT_BRANCH="$CF_PAGES_BRANCH"
 PXT_DIR="$PWD"
 
 # Sibling pxt-microbit project setup
