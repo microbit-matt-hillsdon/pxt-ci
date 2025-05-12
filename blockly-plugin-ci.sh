@@ -34,7 +34,7 @@ npm run format:check
 npm run ghpages
 
 (
-  cat << EOF > built/packaged/404.html
+  cat << EOF > dist/404.html
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -47,6 +47,3 @@ npm run ghpages
 </html>
 EOF
 )
-
-# Use a build path that's the default for CloudFlare 
-mv ../pxt-microbit/built/packaged public
