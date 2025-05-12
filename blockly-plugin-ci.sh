@@ -28,6 +28,7 @@ npm install
   npm link
 )
 
+npm link blockly
 npm run lint
 npm run format:check
 # leaving test on CF for now
