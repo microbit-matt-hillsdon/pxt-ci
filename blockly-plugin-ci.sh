@@ -20,8 +20,7 @@ npm install
   cd ../
   git clone git@github.com:google/blockly.git
   cd blockly
-  # Building our branch for the moment
-  git checkout rc/v12.0.0
+  git checkout develop
   npm install
   npm run package
   cd dist
