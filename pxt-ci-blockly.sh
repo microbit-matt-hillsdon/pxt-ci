@@ -43,6 +43,7 @@ if ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
     npm install
     npm link blockly
     npm run build
+    npm pack
   )
   cp ../blockly-keyboard-experimentation/blockly-keyboard-experiment*.tgz .
 fi
