@@ -21,27 +21,36 @@ export CI=true
 # This is a thin CLI intended to be installed globally
 npm install -g pxt
 
-# pxt project setup
-npm install
+# Blockly develop branch
+(
+  cd ../
+  git clone git@github.com:google/blockly.git
+  cd blockly
+  git checkout develop
+  npm install
+  npm run package
+  cd dist
+  npm link
+)
 
 # Blockly keyboard experiment plugin setup
-# Skip if not present or installed from tgz
-if grep -q "@blockly/keyboard-experiment" package.json && ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
+# Skip if installed from tgz
+if ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
   (
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
     cd blockly-keyboard-experimentation
-    # Building our branch for the moment
-    git checkout makecode-tweaks
     npm install
+    npm link blockly
     npm run build
-    # Doesn't work with npm link (dupe'd blockly deps?) so using tgz package for now
-    npm pack
   )
   cp ../blockly-keyboard-experimentation/blockly-keyboard-experiment*.tgz .
-  npm i ./blockly-keyboard-experiment*.tgz
 fi
 
+# pxt project setup
+npm install
+npm install ./blockly-keyboard-experiment*.tgz
+npm link blockly
 PXT_ENV=production npm run build
 npm link
 
