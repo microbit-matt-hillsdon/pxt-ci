@@ -30,6 +30,8 @@ npm install -g pxt
   npm install
   npm run package
   cd dist
+  # Fix up paths
+  perl -pi -e 's/blockly\//.\//g' index.js
   npm link
 )
 
