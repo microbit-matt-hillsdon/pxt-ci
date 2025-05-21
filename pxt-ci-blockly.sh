@@ -24,6 +24,24 @@ npm install -g pxt
 # pxt project setup
 npm install
 
+# Blockly keyboard experiment plugin setup
+# Skip if not present or installed from tgz
+if grep -q "@blockly/keyboard-experiment" package.json && ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
+  (
+    cd ../
+    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
+    cd blockly-keyboard-experimentation
+    # Building our branch for the moment
+    git checkout makecode-tweaks
+    npm install
+    npm run build
+    # Doesn't work with npm link (dupe'd blockly deps?) so using tgz package for now
+    npm pack
+  )
+  cp ../blockly-keyboard-experimentation/blockly-keyboard-experiment*.tgz .
+  npm i ./blockly-keyboard-experiment*.tgz
+fi
+
 PXT_ENV=production npm run build
 npm link
 
