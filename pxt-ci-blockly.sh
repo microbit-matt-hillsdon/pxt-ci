@@ -14,49 +14,60 @@
 # 
 # Build output will be in public inside the pxt checkout.
 # 
-
 set -euxo pipefail
 export CI=true
+
+# Check if branch starts with "blockly-" to skip blockly setup
+SKIP_BLOCKLY=false
+if [[ "$CF_PAGES_BRANCH" == blockly-* ]]; then
+  SKIP_BLOCKLY=true
+  echo "Branch starts with 'blockly-', skipping blockly and plugin setup"
+fi
 
 # This is a thin CLI intended to be installed globally
 npm install -g pxt
 
-# Blockly develop branch
-(
-  cd ../
-  git clone git@github.com:google/blockly.git
-  cd blockly
-  git checkout develop
-  npm install
-  npm run package
-  cd dist
-  # Fix up paths
-  perl -pi -e 's/blockly\//.\//g' index.js
-  npm link
-)
-
-# Blockly keyboard experiment plugin setup
-# Skip if installed from tgz
-if ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
+if [ "$SKIP_BLOCKLY" = false ]; then
+  # Blockly develop branch
   (
     cd ../
-    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
-    cd blockly-keyboard-experimentation
+    git clone git@github.com:google/blockly.git
+    cd blockly
+    git checkout develop
     npm install
-    npm link blockly
-    npm run build
-    npm pack
+    npm run package
+    cd dist
+    # Fix up paths
+    perl -pi -e 's/blockly\//.\//g' index.js
+    npm link
   )
-  cp ../blockly-keyboard-experimentation/blockly-keyboard-experiment*.tgz .
+  
+  # Blockly keyboard experiment plugin setup
+  # Skip if installed from tgz
+  if ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
+    (
+      cd ../
+      git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
+      cd blockly-keyboard-experimentation
+      npm install
+      npm link blockly
+      npm run build
+      npm pack
+    )
+    cp ../blockly-keyboard-experimentation/blockly-keyboard-experiment*.tgz .
+  fi
 fi
 
 # pxt project setup
 npm install
-npm install ./blockly-keyboard-experiment*.tgz
-npm link blockly
+
+if [ "$SKIP_BLOCKLY" = false ]; then
+  npm install ./blockly-keyboard-experiment*.tgz
+  npm link blockly
+fi
+
 PXT_ENV=production npm run build
 npm link
-
 PXT_BRANCH="$CF_PAGES_BRANCH"
 PXT_DIR="$PWD"
 
