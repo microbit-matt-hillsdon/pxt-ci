@@ -44,7 +44,7 @@ if [ "$SKIP_BLOCKLY" = false ]; then
   
   # Blockly keyboard experiment plugin setup
   # Skip if installed from tgz
-  if ! grep -q "@blockly/keyboard-experiment.*tgz" package.json; then
+  if ! grep -qe "@blockly/keyboard-experiment.*tgz" -qe "@blockly/keyboard-navigation.*tgz" package.json; then
     (
       cd ../
       git clone git@github.com:google/blockly-keyboard-experimentation.git
@@ -54,7 +54,7 @@ if [ "$SKIP_BLOCKLY" = false ]; then
       npm run build
       npm pack
     )
-    cp ../blockly-keyboard-experimentation/blockly-keyboard-experiment*.tgz .
+    cp ../blockly-keyboard-experimentation/blockly-keyboard-navigation*.tgz .
   fi
 fi
 
@@ -62,7 +62,7 @@ fi
 npm install
 
 if [ "$SKIP_BLOCKLY" = false ]; then
-  npm install ./blockly-keyboard-experiment*.tgz
+  npm install ./blockly-keyboard-navigation*.tgz
   npm link blockly
 fi
 
