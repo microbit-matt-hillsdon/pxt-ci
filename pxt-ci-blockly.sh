@@ -49,6 +49,7 @@ if [ "$SKIP_BLOCKLY" = false ]; then
       cd ../
       git clone git@github.com:google/blockly-keyboard-experimentation.git
       cd blockly-keyboard-experimentation
+      git checkout preview || echo "No preview branch, using default"
       npm install
       npm link blockly
       npm run build
