@@ -47,7 +47,7 @@ if [ "$SKIP_BLOCKLY" = false ]; then
   if ! grep -qe "@blockly/keyboard-experiment.*tgz" -qe "@blockly/keyboard-navigation.*tgz" package.json; then
     (
       cd ../
-      git clone git@github.com:google/blockly-keyboard-experimentation.git
+      git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
       cd blockly-keyboard-experimentation
       git checkout preview || echo "No preview branch, using default"
       npm install
