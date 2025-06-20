@@ -31,7 +31,7 @@ if [ "$SKIP_BLOCKLY" = false ]; then
   # Blockly develop branch
   (
     cd ../
-    git clone git@github.com:google/blockly.git
+    git clone git@github.com:microbit-matt-hillsdon/blockly.git
     cd blockly
     git checkout preview || git checkout develop
     npm install
