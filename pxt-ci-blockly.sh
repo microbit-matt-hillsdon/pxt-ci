@@ -33,7 +33,7 @@ if [ "$SKIP_BLOCKLY" = false ]; then
     cd ../
     git clone git@github.com:google/blockly.git
     cd blockly
-    git checkout develop
+    git checkout preview || git checkout develop
     npm install
     npm run package
     cd dist
