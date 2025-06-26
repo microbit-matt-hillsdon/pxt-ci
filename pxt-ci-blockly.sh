@@ -17,9 +17,9 @@
 set -euxo pipefail
 export CI=true
 
-# Check if branch starts with "blockly-" to skip blockly setup
+# Check if branch starts with "blockly-" to skip blockly setup. Cope with my failure to spell.
 SKIP_BLOCKLY=false
-if [[ "$CF_PAGES_BRANCH" == blockly-* ]]; then
+if [[ "$CF_PAGES_BRANCH" == blockly-* ]] || [[ "$CF_PAGES_BRANCH" == blocky-* ]]; then
   SKIP_BLOCKLY=true
   echo "Branch starts with 'blockly-', skipping blockly and plugin setup"
 fi
