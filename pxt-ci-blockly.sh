@@ -17,23 +17,24 @@
 set -euxo pipefail
 export CI=true
 
-# Check if branch starts with "blockly-" to skip blockly setup. Cope with my failure to spell.
-SKIP_BLOCKLY=false
-if [[ "$CF_PAGES_BRANCH" == blockly-* ]] || [[ "$CF_PAGES_BRANCH" == blocky-* ]]; then
-  SKIP_BLOCKLY=true
-  echo "Branch starts with 'blockly-', skipping blockly and plugin setup"
-fi
-
-# This is a thin CLI intended to be installed globally
-npm install -g pxt
-
-if [ "$SKIP_BLOCKLY" = false ]; then
-  # Blockly develop branch
+if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
+  echo "Branch starts with 'sr-', configuring dependencies for screenreader work"
+  # This requires a specific plugin branch but is fine with 12.2.0 blockly.
+  (
+    cd ../
+    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
+    cd blockly-keyboard-experimentation
+    git checkout add-screen-reader-support
+    npm install
+    npm run build
+  )
+elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
+  echo "Branch starts with 'kb-', configuring dependencies for keyboard work"
   (
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly.git
     cd blockly
-    git checkout preview || git checkout develop
+    git checkout kb-preview || git checkout develop
     npm install
     npm run package
     cd dist
@@ -42,29 +43,27 @@ if [ "$SKIP_BLOCKLY" = false ]; then
     npm link
   )
   
-  # Blockly keyboard experiment plugin setup
-  # Skip if installed from tgz
-  if ! grep -qe "@blockly/keyboard-experiment.*tgz" -qe "@blockly/keyboard-navigation.*tgz" package.json; then
-    (
-      cd ../
-      git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
-      cd blockly-keyboard-experimentation
-      git checkout preview || echo "No preview branch, using default"
-      npm install
-      npm link blockly
-      npm run build
-      npm pack
-    )
-    cp ../blockly-keyboard-experimentation/blockly-keyboard-navigation*.tgz .
-  fi
+  (
+    cd ../
+    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
+    cd blockly-keyboard-experimentation
+    git checkout kb-preview || echo "No kb-preview branch, using main"
+    npm install
+    npm link blockly
+    npm run build
+  )
 fi
+
+# This is a thin CLI intended to be installed globally
+npm install -g pxt
 
 # pxt project setup
 npm install
 
-if [ "$SKIP_BLOCKLY" = false ]; then
-  npm install ./blockly-keyboard-navigation*.tgz
-  npm link blockly
+# Link to whatever we checked out earlier
+LINK_TARGETS=$(find ../ -maxdepth 1 -type d -name "blockly*" | tr '\n' ' ')
+if [[ -n "$LINK_TARGETS" ]];
+  npm link "$LINK_TARGETS"
 fi
 
 PXT_ENV=production npm run build
