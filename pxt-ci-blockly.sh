@@ -24,6 +24,9 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
     cd blockly-keyboard-experimentation
+    # For the moment this is on Ben's fork, will change shortly to be a google branch.
+    git remote add BenHenning git@github.com:BenHenning/blockly-keyboard-experimentation.git
+    git fetch BenHenning
     git checkout add-screen-reader-support
     npm install
     npm run build
