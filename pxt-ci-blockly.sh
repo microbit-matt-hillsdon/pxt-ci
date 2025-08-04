@@ -28,7 +28,7 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     # git checkout add-screen-reader-support
     git remote add BenHenning git@github.com:BenHenning/blockly-keyboard-experimentation.git
     git fetch BenHenning
-    git checkout introduce-initial-screen-reader-support
+    git checkout --track BenHenning/introduce-initial-screen-reader-support
     npm install
     npm run build
   )
