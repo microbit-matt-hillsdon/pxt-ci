@@ -17,6 +17,12 @@
 set -euxo pipefail
 export CI=true
 
+# This is a thin CLI intended to be installed globally
+npm install -g pxt
+
+# pxt project setup
+npm install
+
 if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
   echo "Branch starts with 'sr-', configuring dependencies for screenreader work"
   # We npm link blockly even though its unchanged because otherwise browserify
@@ -25,7 +31,7 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     cd ../
     git clone git@github.com:google/blockly.git
     cd blockly
-    git checkout blockly-v12.2.0
+    git checkout add-screen-reader-support
     npm install
     npm run package
     cd dist
@@ -37,16 +43,13 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     cd ../
     git clone git@github.com:google/blockly-keyboard-experimentation.git
     cd blockly-keyboard-experimentation
-    # For the moment this is on Ben's fork, will change shortly to be a google branch.
-    # git checkout add-screen-reader-support
-    git remote add BenHenning git@github.com:BenHenning/blockly-keyboard-experimentation.git
-    git fetch BenHenning
-    git checkout --track BenHenning/introduce-initial-screen-reader-support
+    git checkout add-screen-reader-support
     npm install
     npm link blockly
     npm run build
     npm link
   )
+  npm link blockly @blockly/keyboard-navigation
 elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
   echo "Branch starts with 'kb-', configuring dependencies for keyboard work"
   (
@@ -71,14 +74,8 @@ elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
     npm run build
     npm link
   )
+  npm link blockly @blockly/keyboard-navigation
 fi
-
-# This is a thin CLI intended to be installed globally
-npm install -g pxt
-
-# pxt project setup
-npm install
-npm link blockly @blockly/keyboard-navigation
 
 PXT_ENV=production npm run build
 PXT_BRANCH="$CF_PAGES_BRANCH"
