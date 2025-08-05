@@ -19,6 +19,21 @@ export CI=true
 
 if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
   echo "Branch starts with 'sr-', configuring dependencies for screenreader work"
+  # We npm link blockly even though its unchanged because otherwise browserify
+  # gets confused and packages two copies of blockly.
+  (
+    cd ../
+    git clone git@github.com:google/blockly.git
+    cd blockly
+    git checkout blockly-v12.2.0
+    npm install
+    npm run package
+    cd dist
+    # Fix up paths
+    perl -pi -e 's/blockly\//.\//g' index.js
+    npm link
+  )
+
   # This requires a specific plugin branch but is fine with 12.2.0 blockly.
   (
     cd ../
@@ -30,6 +45,7 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     git fetch BenHenning
     git checkout --track BenHenning/introduce-initial-screen-reader-support
     npm install
+    npm link blockly
     npm run build
   )
 elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
