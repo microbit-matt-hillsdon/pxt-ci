@@ -33,8 +33,6 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     perl -pi -e 's/blockly\//.\//g' index.js
     npm link
   )
-
-  # This requires a specific plugin branch but is fine with 12.2.0 blockly.
   (
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
@@ -62,7 +60,6 @@ elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
     perl -pi -e 's/blockly\//.\//g' index.js
     npm link
   )
-  
   (
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
@@ -83,7 +80,7 @@ npm install
 # Link to whatever we checked out earlier
 LINK_TARGETS=$(find ../ -maxdepth 1 -type d -name "blockly*" | tr '\n' ' ')
 if [[ -n "$LINK_TARGETS" ]]; then
-  npm link "$LINK_TARGETS"
+  npm link $LINK_TARGETS
 fi
 
 PXT_ENV=production npm run build
