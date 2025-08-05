@@ -76,12 +76,7 @@ npm install -g pxt
 
 # pxt project setup
 npm install
-
-# Link to whatever we checked out earlier
-LINK_TARGETS=$(find ../ -maxdepth 1 -type d -name "blockly*" | tr '\n' ' ')
-if [[ -n "$LINK_TARGETS" ]]; then
-  npm link $LINK_TARGETS
-fi
+npm link blockly @blockly/keyboard-navigation
 
 PXT_ENV=production npm run build
 npm link
