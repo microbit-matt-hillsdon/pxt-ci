@@ -35,7 +35,7 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
   )
   (
     cd ../
-    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
+    git clone git@github.com:google/blockly-keyboard-experimentation.git
     cd blockly-keyboard-experimentation
     # For the moment this is on Ben's fork, will change shortly to be a google branch.
     # git checkout add-screen-reader-support
@@ -45,6 +45,7 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     npm install
     npm link blockly
     npm run build
+    npm link
   )
 elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
   echo "Branch starts with 'kb-', configuring dependencies for keyboard work"
@@ -68,6 +69,7 @@ elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
     npm install
     npm link blockly
     npm run build
+    npm link
   )
 fi
 
@@ -79,7 +81,6 @@ npm install
 npm link blockly @blockly/keyboard-navigation
 
 PXT_ENV=production npm run build
-npm link
 PXT_BRANCH="$CF_PAGES_BRANCH"
 PXT_DIR="$PWD"
 
