@@ -29,9 +29,9 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
   # gets confused and packages two copies of blockly.
   (
     cd ../
-    git clone git@github.com:google/blockly.git
+    git clone git@github.com:BenHenning/blockly.git
     cd blockly
-    git checkout add-screen-reader-support
+    git checkout introduce-initial-screen-reader-support
     npm install
     npm run package
     cd dist
@@ -41,9 +41,9 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
   )
   (
     cd ../
-    git clone git@github.com:google/blockly-keyboard-experimentation.git
+    git clone git@github.com:BenHenning/blockly-keyboard-experimentation.git
     cd blockly-keyboard-experimentation
-    git checkout add-screen-reader-support
+    git checkout introduce-initial-screen-reader-support
     npm install
     npm link blockly
     npm run build
