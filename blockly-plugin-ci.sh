@@ -25,8 +25,6 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     npm install
     npm run package
     cd dist
-    # Fix up paths
-    perl -pi -e 's/blockly\//.\//g' index.js
     npm link
   )
   npm link blockly
@@ -40,8 +38,6 @@ elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
     npm install
     npm run package
     cd dist
-    # Fix up paths
-    perl -pi -e 's/blockly\//.\//g' index.js
     npm link
   )
   npm link blockly
