@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Hacky CI to build the Blockly Keyboard Navigation experiment in CF Pages and
-# similar environments. It builds against rc/v12.0.0 of Blockly via npm link.
+# similar environments.
 #
 # Intended to be run via
 # 
@@ -15,23 +15,39 @@ export CI=true
 
 npm install
 
-# Blockly 
-(
-  cd ../
-  git clone git@github.com:google/blockly.git
-  cd blockly
-  git checkout develop
-  npm install
-  npm run package
-  cd dist
-  npm link
-)
+if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
+  echo "Branch starts with 'sr-', configuring dependencies for screenreader work"
+  (
+    cd ../
+    git clone git@github.com:google/blockly.git
+    cd blockly
+    git checkout add-screen-reader-support-experimental
+    npm install
+    npm run package
+    cd dist
+    # Fix up paths
+    perl -pi -e 's/blockly\//.\//g' index.js
+    npm link
+  )
+  npm link blockly
+elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
+  echo "Branch starts with 'kb-', configuring dependencies for keyboard work"
+  (
+    cd ../
+    git clone git@github.com:microbit-matt-hillsdon/blockly.git
+    cd blockly
+    git checkout kb-preview || git checkout develop
+    npm install
+    npm run package
+    cd dist
+    # Fix up paths
+    perl -pi -e 's/blockly\//.\//g' index.js
+    npm link
+  )
+  npm link blockly
+fi
 
-npm link blockly
-npm run lint || echo "Oops, lint is busted"
-npm run format:check
-# leaving test on CF for now
-npm run ghpages
+npm run build
 
 (
   cat << EOF > dist/404.html
