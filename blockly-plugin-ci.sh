@@ -48,6 +48,10 @@ elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
 fi
 
 npm run build
+npm run lint
+npm run format:check
+# not doing tests on CF for now
+npm run ghpages
 
 (
   cat << EOF > dist/404.html
