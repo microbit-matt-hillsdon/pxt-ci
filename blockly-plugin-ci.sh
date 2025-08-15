@@ -21,7 +21,7 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     cd ../
     git clone git@github.com:google/blockly.git
     cd blockly
-    git checkout add-screen-reader-support-experimental
+    git checkout "$CF_PAGES_BRANCH" || git checkout sr-preview || git checkout add-screen-reader-support-experimental
     npm install
     npm run package
     cd dist
@@ -34,7 +34,7 @@ elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
     cd ../
     git clone git@github.com:microbit-matt-hillsdon/blockly.git
     cd blockly
-    git checkout kb-preview || git checkout develop
+    git checkout "$CF_PAGES_BRANCH" || git checkout kb-preview || git checkout develop
     npm install
     npm run package
     cd dist
