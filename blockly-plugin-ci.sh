@@ -21,7 +21,9 @@ if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
     cd ../
     git clone git@github.com:google/blockly.git
     cd blockly
-    git checkout "$CF_PAGES_BRANCH" || git checkout sr-preview || git checkout add-screen-reader-support-experimental
+    git remote add matt git@github.com:microbit-matt-hillsdon/blockly.git
+    git fetch matt
+    git checkout "$CF_PAGES_BRANCH" || git checkout sr-preview || git checkout --track origin/add-screen-reader-support-experimental
     npm install
     npm run package
     cd dist
