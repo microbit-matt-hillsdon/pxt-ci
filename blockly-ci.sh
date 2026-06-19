@@ -37,8 +37,17 @@ mkdir -p "$OUT/node_modules/@blockly"
 cp -RL "$PKG/tests" "$OUT/tests"
 cp -RL "$PKG/build" "$OUT/build"
 cp -RL "$PKG/dist"  "$OUT/dist"
-cp -RL "$PKG/node_modules/@blockly/dev-tools"    "$OUT/node_modules/@blockly/dev-tools"
-cp -RL "$PKG/node_modules/@blockly/theme-modern" "$OUT/node_modules/@blockly/theme-modern"
+
+# npm may hoist workspace deps to the repo-root node_modules instead of the
+# package's own, so look in both. The playground loads these at runtime.
+copy_dep() {
+  for base in "$PKG/node_modules/@blockly/$1" "node_modules/@blockly/$1"; do
+    if [ -e "$base" ]; then cp -RL "$base" "$OUT/node_modules/@blockly/$1"; return; fi
+  done
+  echo "Could not find @blockly/$1 in node_modules" >&2; exit 1
+}
+copy_dep dev-tools
+copy_dep theme-modern
 
 # Land visitors on the playground.
 printf '/  /tests/playground.html  302\n' > "$OUT/_redirects"
