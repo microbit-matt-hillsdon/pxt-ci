@@ -33,21 +33,30 @@ npm run build -w blockly
 PKG=packages/blockly
 OUT=public
 rm -rf "$OUT"
-mkdir -p "$OUT/node_modules/@blockly"
+mkdir -p "$OUT/vendor/@blockly"
 cp -RL "$PKG/tests" "$OUT/tests"
 cp -RL "$PKG/build" "$OUT/build"
 cp -RL "$PKG/dist"  "$OUT/dist"
 
+# Cloudflare Pages omits any node_modules/ directory from the upload, so the
+# @blockly deps the playground loads at runtime are staged under vendor/
+# instead and the references are rewritten below.
 # npm may hoist workspace deps to the repo-root node_modules instead of the
-# package's own, so look in both. The playground loads these at runtime.
+# package's own, so look in both.
 copy_dep() {
   for base in "$PKG/node_modules/@blockly/$1" "node_modules/@blockly/$1"; do
-    if [ -e "$base" ]; then cp -RL "$base" "$OUT/node_modules/@blockly/$1"; return; fi
+    if [ -e "$base" ]; then cp -RL "$base" "$OUT/vendor/@blockly/$1"; return; fi
   done
   echo "Could not find @blockly/$1 in node_modules" >&2; exit 1
 }
 copy_dep dev-tools
 copy_dep theme-modern
+
+# Point the playground at the vendored copies. The ../ and ../../ relative
+# prefixes are preserved, only node_modules/@blockly -> vendor/@blockly.
+grep -rl 'node_modules/@blockly' "$OUT/tests" | while read -r f; do
+  perl -pi -e 's{node_modules/\@blockly}{vendor/\@blockly}g' "$f"
+done
 
 # Land visitors on the playground.
 printf '/  /tests/playground.html  302\n' > "$OUT/_redirects"
