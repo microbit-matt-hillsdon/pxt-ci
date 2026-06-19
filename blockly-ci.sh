@@ -37,6 +37,7 @@ mkdir -p "$OUT/vendor/@blockly"
 cp -RL "$PKG/tests" "$OUT/tests"
 cp -RL "$PKG/build" "$OUT/build"
 cp -RL "$PKG/dist"  "$OUT/dist"
+cp -RL "$PKG/media" "$OUT/media"   # trash can / sprite / sound assets (media: '../media/')
 
 # Cloudflare Pages omits any node_modules/ directory from the upload, so the
 # @blockly deps the playground loads at runtime are staged under vendor/
