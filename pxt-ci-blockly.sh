@@ -23,60 +23,6 @@ npm install -g pxt
 # pxt project setup
 npm install
 
-if [[ "$CF_PAGES_BRANCH" == sr-* ]]; then
-  echo "Branch starts with 'sr-', configuring dependencies for screenreader work"
-  # We npm link blockly even though its unchanged because otherwise browserify
-  # gets confused and packages two copies of blockly.
-  (
-    cd ../
-    git clone git@github.com:google/blockly.git
-    cd blockly
-    git checkout add-screen-reader-support-experimental
-    npm install
-    npm run package
-    cd dist
-    # Fix up paths
-    perl -pi -e 's/blockly\//.\//g' index.js
-    npm link
-  )
-  (
-    cd ../
-    git clone git@github.com:google/blockly-keyboard-experimentation.git
-    cd blockly-keyboard-experimentation
-    git checkout add-screen-reader-support-experimental
-    npm install
-    npm link blockly
-    npm run build
-    npm link
-  )
-  npm link blockly @blockly/keyboard-navigation
-elif [[ "$CF_PAGES_BRANCH" == kb-* ]]; then
-  echo "Branch starts with 'kb-', configuring dependencies for keyboard work"
-  (
-    cd ../
-    git clone git@github.com:microbit-matt-hillsdon/blockly.git
-    cd blockly
-    git checkout kb-preview || git checkout develop
-    npm install
-    npm run package
-    cd dist
-    # Fix up paths
-    perl -pi -e 's/blockly\//.\//g' index.js
-    npm link
-  )
-  (
-    cd ../
-    git clone git@github.com:microbit-matt-hillsdon/blockly-keyboard-experimentation.git
-    cd blockly-keyboard-experimentation
-    git checkout kb-preview || echo "No kb-preview branch, using main"
-    npm install
-    npm link blockly
-    npm run build
-    npm link
-  )
-  npm link blockly @blockly/keyboard-navigation
-fi
-
 PXT_ENV=production npm run build
 PXT_BRANCH="$CF_PAGES_BRANCH"
 PXT_DIR="$PWD"
